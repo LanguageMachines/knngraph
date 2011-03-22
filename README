@@ -1,0 +1,127 @@
+This is the README file for knngraph, version 1.0 beta.
+
+--------------------------------------------------------------------------------
+Description
+--------------------------------------------------------------------------------
+
+knngraph is a set of rather trivial command line tools, written in
+Python, to visualize the nearest neighbours relations in a Timbl
+instance base. It uses neato (part of the graphviz package for
+automatic graph layout) to draw the instance base as a graph with the
+instances as nodes and their nearest neighbour relations as arcs. It
+consists of two files:
+
+- indexcol: adds an index as the first column to an instances file
+
+- timblout2graph: transforms Timbl output to a neato graph
+
+--------------------------------------------------------------------------------
+Platform
+--------------------------------------------------------------------------------
+
+Tested on Linux and OS X (10.3, Panther). Should work on any OS with a Python
+interpreter and neato. (Will probably run on MS windows as well,
+although I have not tested it.)
+
+--------------------------------------------------------------------------------
+Requirements
+--------------------------------------------------------------------------------
+
+- a recent version of Timbl (5.0 or later) 
+- neato, which is part of the grapviz package
+- a recent version of Python (2.3 or later)
+
+--------------------------------------------------------------------------------
+License
+--------------------------------------------------------------------------------
+
+You are free to use, copy, distribute and modify this software. 
+
+--------------------------------------------------------------------------------
+Author:
+--------------------------------------------------------------------------------
+
+Erwin Marsi (see the file CONTACT)
+
+--------------------------------------------------------------------------------
+Install
+--------------------------------------------------------------------------------
+
+Unzip the zip file anywhere you like
+
+--------------------------------------------------------------------------------
+Usage
+--------------------------------------------------------------------------------
+
+Generating a graph requires 4 steps.
+
+1. Index your instance base
+
+You have to add a unique number to each instance. This can be
+accomplished by simply numbering the instances. For example,
+
+  indexcol -d, <dimin.train >indexed.dimin.train
+
+Will add a number as the first column to my_instance_base and write
+the result numbered_instance_base. By default the column delimiter is
+assumed to be a single space, hence the "-d," is used here to force a
+comma as the delimiter.
+
+
+2. Classification
+
+Run Timbl, using the instance base both as training and test
+material. Use the "+vn" trace option to dump the nearest neighours to
+the output
+
+  Timbl -k2 -f indexed.dimin.train -t indexed.dimin.train -o indexed.dimin.train.out +vn
+
+
+3. Generating a graph specification 
+
+Use timblout2graph to generate a graph specification for neato.
+
+  ./timblout2graph <indexed.dimin.train.out -d, >graph.spec 
+
+
+Optionally, you can edit this file to modify the format of the nodes
+and arcs. For instance, to give all nodes for class "T" the colour red, replace
+
+  [label=T];
+
+with
+
+  [label=T,style=filled,color=red];
+
+See the neato (or dot) manual for all formatting options.
+
+
+4. Generating a graph
+
+Finally, use neato to produce a drawing. To write a postscript file:
+  
+  neato -Tps -o graph.ps <graph.spec
+
+You can use ghostview (or 'gv') to view grap.ps. See the neato (or
+dot) manual for other graphic formats.
+
+
+--------------------------------------------------------------------------------
+Documentation
+--------------------------------------------------------------------------------
+
+All scripts all self-documenting: use the '-h' options. 
+
+
+--------------------------------------------------------------------------------
+PS
+--------------------------------------------------------------------------------
+
+If you find knngraph useful, encounter bugs, or make improvements, please let
+me know.
+
+good luck!
+
+Erwin
+
+$Id$

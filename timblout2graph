@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+
+# -*- Mode: Python -*-
+
+__author__ = 'Erwin Marsi <e.c.marsi@uvt.nl>'
+__version__ = '$Id:'
+
+from sys import stdin
+from random import random
+from optparse import OptionParser
+
+usage = \
+"""
+  %prog [options] <FILE
+
+purpose:
+  Transforms Timbl output to a neato graph.
+  
+args:
+  FILE                  Timbl output file"""
+
+parser = OptionParser(usage, version=__version__)
+
+parser.add_option('-d', '--delimiter',
+                  dest='delimiter', 
+                  metavar='STRING', default=' ',
+                  help="column delimiterer (default is ' ')")
+
+(options, args) = parser.parse_args()
+
+
+print 'graph G {'
+
+for l in stdin:
+    if l.startswith('#'):
+        if l.startswith('# k='):
+            continue
+        nn_index = l.lstrip('#\t ').split(options.delimiter)[0]
+        if node_index != nn_index:
+            print '%s -- %s;' % (node_index, nn_index)
+    else:
+        cols = l.split(options.delimiter)
+        node_index = cols[0]
+        node_class = cols[-2]
+        print '%s [label=%s];' % (node_index, node_class)
+
+print '}'

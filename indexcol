@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+# -*- Mode: Python -*-
+
+__author__ = 'Erwin Marsi <e.c.marsi@uvt.nl>'
+__version__ = '$Id:'
+
+
+from sys import stdin
+from optparse import OptionParser
+
+usage = \
+"""
+  %prog [options] <FILE
+
+purpose:
+  Adds an index as the first column to an instances file.
+  
+args:
+  FILE                  Timbl input/output file"""
+
+parser = OptionParser(usage, version=__version__)
+
+parser.add_option('-d', '--delimiter',
+                  dest='delimiter', 
+                  metavar='STRING', default=' ',
+                  help="column delimiter (default is ' ')")
+
+(options, args) = parser.parse_args()
+
+
+for i, l in enumerate(stdin):
+    print '%d%s%s' % (i, options.delimiter, l),
+
